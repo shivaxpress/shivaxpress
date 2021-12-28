@@ -6,28 +6,28 @@ rem ---------------------------------------------------------------------------
 rem Check the Command Line Arguments for list of Services to be stopped
 
 echo %1
-IF [%1~]==[] GOTO usage
+IF [%~1]==[] GOTO usage
 
 :ResolveInitialState
-SC query %2 | FIND "STATE" | FIND "RUNNING" >NUL
+SC query %1 | FIND "STATE" | FIND "RUNNING" >NUL
 IF errorlevel 0 IF NOT errorlevel 1 GOTO StopService
-SC query %2 | FIND "STATE" | FIND "STOPPED" >NUL
+SC query %1 | FIND "STATE" | FIND "STOPPED" >NUL
 IF errorlevel 0 IF NOT errorlevel 1 GOTO StoppedService
 echo Service State is changing, waiting for service to resolve its state before making changes
-sc query %2 | Find "STATE"
+sc query %1 | Find "STATE"
 timeout /t 2 /nobreak >NUL
 GOTO ResolveInitialState
 
 :StopService
 echo Stopping %1 on \\%COMPUTERNAME%
-sc stop %2 >NUL
+sc stop %1 >NUL
 
 GOTO StoppingService
 :StopingServiceDelay
-echo Waiting for %2 to stop
+echo Waiting for %1 to stop
 timeout /t 2 /nobreak >NUL
 :StoppingService
-SC query %2 | FIND "STATE" | FIND "STOPPED" >NUL
+SC query %1 | FIND "STATE" | FIND "STOPPED" >NUL
 IF errorlevel 1 GOTO StopingServiceDelay
 
 :StoppedService
