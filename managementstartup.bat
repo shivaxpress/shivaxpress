@@ -16,6 +16,13 @@ SC queryex "%ServiceName%"|Find "STATE"|Find /v "RUNNING">Nul&&(
     echo "%ServiceName%" started
     exit /b 0
 )||(
-    echo "%ServiceName%" working
+    echo "%ServiceName%" working and stopping now
+    echo Stop "%ServiceName%"
+    
+    Net stop "%ServiceName%">nul||(
+        Echo "%ServiceName%" wont stop 
+        exit /b 1
+    )
+    echo "%ServiceName%" stopped
     exit /b 0
 )
