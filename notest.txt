@@ -1,1 +1,39 @@
+Genesys Management Layer Monitoring and Control Functions: mlcmd Utility
+
+Overview:
+Query the status of hosts, applications, or solutions.
+Start, stop, and gracefully stop applications and solutions.
+Send a custom command to an application.
+
+Pre-Requisite:
+Install the mlcmd Utility
+
+Installation:
+Follow the instructions in the section "Solution Control Server Utilities' of the https://docs.genesys.com/Documentation/FR/Current/Dep/DepSCS#Solution_Control_Server_Utilities
+
+Using the Utility
+All mlcmd command parameters are made in a single command. The general syntax is as follows:
+
+mlcmd <mandatory parameters> <optional parameters> <command parameter>
+
+You must provide all the mandatory parameters and one operation parameter.
+
+HQ14 (Graceful shutdown)
+SIP_Server_HQ 
+ResourceManager_HQ
+MCP_HQ
+LCA
+
+HQ13  (Normal shutdown)
+SpeechServer_HQ
+LCA
+
+	         HQ15 (Normal Shutdown)
+Config Server 
+DB Server
+SCS
+Message Server
+Reporting Server
+LCA
+
 mlcmd -cshost 192.168.10.98 -csport 2020 -csappname default -csuser default -cspassword password -scshost 192.168.10.98 -scsport 7003 -getappstatus 445 -usedbid
