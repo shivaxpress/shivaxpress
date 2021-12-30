@@ -1,0 +1,1 @@
+mlcmd -cshost 192.168.10.98 -csport 2020 -csappname default -csuser default -cspassword password -scshost 192.168.10.98 -scsport 7003 -getappstatus 445 -usedbid
