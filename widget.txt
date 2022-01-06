@@ -1,0 +1,37 @@
+window._genesys.widgets = {
+      main: {
+            debug: true,
+            theme: "dark",
+            i18n: ".\\i18n\\widgets-fr.i18n.json",
+            lang: "fr",
+            preload: [
+                  "sidebar"
+            ]
+      },
+      webchat: {
+            userData: {},
+            emojis: true,
+            cometD: {
+                  enabled: false
+            },
+            autoInvite: {
+                  enabled: true,
+                  timeToInviteSeconds: 5,
+                  inviteTimeoutSeconds: 30
+            },
+            chatButton: {
+                  enabled: true,
+                  openDelay: 1000,
+                  effectDuration: 300,
+                  hideDuringInvite: true
+            },
+            uploadsEnabled: true,
+            dataURL: "http://demosrv.genesyslab.com/genesys/2/chat/customer-support",
+            apikey: ""
+      },
+      sidebar: {
+            showOnStartup: true,
+            position: "right",
+            expandOnHover: true
+      }
+};
