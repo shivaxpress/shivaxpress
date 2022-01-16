@@ -37,3 +37,94 @@ Reporting Server
 LCA
 
 mlcmd -cshost 192.168.10.98 -csport 2020 -csappname default -csuser default -cspassword password -scshost 192.168.10.98 -scsport 7003 -getappstatus 445 -usedbid
+
+@echo off
+:: BayVois LLC
+rem ---------------------------------------------------------------------------
+rem Genesys mlcmd utility Windows Stop script
+rem ---------------------------------------------------------------------------
+rem Check the Command Line Arguments for Application Config DB ID to be stopped
+:: mlcmd utility folder from Genesys Solution Control Server 
+:: should already be set in %PATH%
+
+IF [%~1]==[] GOTO usage
+
+:SetConfigVariables
+set CSHOST=wivrhqp15
+set CSPORT=2020
+set CSUSER=default
+set CSPASSWORD=password
+set CSAPPNAME=default
+set SCSHOST=wivrhqp15
+set SCSPORT=7003
+set TIMEOUT=120
+set MLSTOPCMD=mlcmd -cshost %CSHOST%  -csport %CSPORT% -csappname %CSAPPNAME% -csuser %CSUSER% -cspassword %CSPASSWORD% -scshost %SCSHOST% -scsport %SCSPORT% -timeout %TIMEOUT% -stopapp-graceful %1 -usedbid
+set MLSTATCMD=mlcmd -cshost %CSHOST%  -csport %CSPORT% -csappname %CSAPPNAME% -csuser %CSUSER% -cspassword %CSPASSWORD% -scshost %SCSHOST% -scsport %SCSPORT% -timeout %TIMEOUT% -getappstatus %1 -usedbid
+For /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set mydate=%%c-%%a-%%b)
+::For /f "tokens=1-2 delims=/:" %%a in ("%TIME%") do (set mytime=%%a%%b)
+rem Util Application directory
+set "UTIL_DIR=%~dp0"
+::SET LOGFILE=%UTIL_DIR%log-%1-%mydate%-%mytime%.log
+SET LOGFILE=%UTIL_DIR%Logs\log-%1-%mydate%.log
+
+:StopService
+echo %mydate% %0 execution started at %mytime% on %COMPUTERNAME%  >> %LOGFILE%
+echo %MLSTOPCMD%  >> %LOGFILE%
+echo %DATE% %TIME%: Stopping Genesys App DB ID %1 >> %LOGFILE%
+%MLSTOPCMD%
+IF %ERRORLEVEL% NEQ 0 ( 
+   echo %DATE% %TIME%: Here is my Error Level %ERRORLEVEL% >> %LOGFILE%
+   echo %DATE% %TIME%: Stop Failed or Delayed for %TIMEOUT% seconds>> %LOGFILE%
+   echo %DATE% %TIME%: Checking the Status....>> %LOGFILE%
+   call :StatusService
+   EXIT /B %ERRORLEVEL%
+) ELSE ( GOTO StoppedService)
+
+:StoppedService
+echo %DATE% %TIME%: Genesys App DB ID %1 is stopped  >> %LOGFILE%
+EXIT /B 0
+
+:usage
+echo %0 [Genesys Config Object DB ID in Integer]
+echo Example: %0 112
+EXIT /B %ERRORLEVEL%
+
+:StatusService
+echo %MLSTATCMD%  >> %LOGFILE%
+echo %DATE% %TIME%: Status Check on Genesys App DB ID %1 >> %LOGFILE%
+%MLSTATCMD%
+IF %ERRORLEVEL% EQU 0 ( 
+   echo "Application status is UNKNOWN" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 1 ( 
+   echo "Application status is STOPPED" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 2 ( 
+   echo "Application status is STOP_TRANSITION" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 3 ( 
+   echo "Application status is STOP_PENDING" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 4 ( 
+   echo "Application status is START_TRANSITION" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 5 ( 
+   echo "Application status is START_PENDING" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 6 ( 
+   echo "Application status is RUNNING" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 7 ( 
+   echo "Application status is INITIALIZING" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 8 ( 
+   echo "Application status is SERVICE_UNAVAILABLE" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 9 ( 
+   echo "Application status is SUSPENDING" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+) ELSE IF %ERRORLEVEL% EQU 10 ( 
+   echo "Application status is SUSPENDED" >> %LOGFILE%
+   EXIT /B %ERRORLEVEL%
+)
+
