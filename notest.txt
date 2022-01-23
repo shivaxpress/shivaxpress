@@ -1,3 +1,31 @@
+###
+C:\Windows\System32>curl -v -i -H "Authorization: Basic Z2VuZXN5czpnZW5lc3lz" http://192.168.10.98:8010/genesys/2/chat/customer-support -d "firstName=Shyamala&lastName=Ramkumar&emailAddress=shyamala.shivakumar@gmail.com&subject=CurlForm&nickname=Shyam"
+*   Trying 192.168.10.98...
+* Connected to 192.168.10.98 (192.168.10.98) port 8010 (#0)
+> POST /genesys/2/chat/customer-support HTTP/1.1
+> Host: 192.168.10.98:8010
+> User-Agent: curl/7.47.1
+> Accept: */*
+> Authorization: Basic Z2VuZXN5czpnZW5lc3lz
+> Content-Length: 111
+> Content-Type: application/x-www-form-urlencoded
+>
+* upload completely sent off: 111 out of 111 bytes
+< HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+< Set-Cookie: JSESSIONID=node01ncg4c72ttpfnhrvq6ai9kqv110.node0;Path=/genesys;HttpOnly
+Set-Cookie: JSESSIONID=node01ncg4c72ttpfnhrvq6ai9kqv110.node0;Path=/genesys;HttpOnly
+< Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+< Content-Type: application/json;charset=utf-8
+Content-Type: application/json;charset=utf-8
+< Transfer-Encoding: chunked
+Transfer-Encoding: chunked
+
+<
+{"messages":[{"from":{"nickname":"Shyam","participantId":1,"type":"Client"},"index":1,"type":"ParticipantJoined","utcTime":1642972477000}],"chatEnded":false,"statusCode":0,"alias":"207","secureKey":"3968fa5ca071ad61b9f8","userId":"00CF61EDC53A0027","chatId":"004NBaGXMHTN001T","nextPosition":
+168.10.98 left intact
+###
 curl -X POST -H 'Authorization:Basic Z2VuZXN5czpnZW5lc3lz' http://192.168.10.98:8010/genesys/2/chat/customer-support -d "firstName=Shyamala&lastName=Ramkumar&emailAddress=shyamala.shivakumar@gmail.com&subject=CurlForm&nickname=Shyam"
 
 curl -X POST http://192.168.10.98:8010/genesys/2/chat/customer-support -H "Content-Type: application/json" -d "{"firstName":"Shyamala","lastName":"Ramkumar","emailAddress":"shyamala.shivakumar@gmail.com","subject":"CurlMe"}" --user "genesys:genesys"
