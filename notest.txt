@@ -1,3 +1,5 @@
+curl -X POST -H 'Authorization:Basic Z2VuZXN5czpnZW5lc3lz' http://192.168.10.98:8010/genesys/2/chat/customer-support -d "firstName=Shyamala&lastName=Ramkumar&emailAddress=shyamala.shivakumar@gmail.com&subject=CurlForm&nickname=Shyam"
+
 curl -X POST http://192.168.10.98:8010/genesys/2/chat/customer-support -H "Content-Type: application/json" -d "{"firstName":"Shyamala","lastName":"Ramkumar","emailAddress":"shyamala.shivakumar@gmail.com","subject":"CurlMe"}" --user "genesys:genesys"
 
 Genesys Management Layer Monitoring and Control Functions: mlcmd Utility
